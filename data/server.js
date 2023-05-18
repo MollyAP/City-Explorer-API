@@ -33,7 +33,7 @@ app.get('/weather', (req, res) => {
     });
 
     if (!validCity) {
-      res.status(404).send(` 
+      res.status(500).send(` 
       <html>
       <head>
         <link rel="stylesheet" type="text/css" href="./error.css">
@@ -41,7 +41,7 @@ app.get('/weather', (req, res) => {
       <body>
         <div class="outer-container">
           <div class="inner-container">
-            <h1>404</h1>
+            <h1>500</h1>
             <p>Sowwy, the page you are looking for does not exist ówò</p>
           </div>
         </div>
@@ -54,7 +54,7 @@ app.get('/weather', (req, res) => {
     let dailyForecasts = validCity.data.map(day=>{
       return new Forecast(day.datetime, day.weather.description);
     })
-    
+
     res.send(dailyForecasts)
     // Filter the weather data based on lat, lon, and searchQuery
     const forcastData = validCity.data
