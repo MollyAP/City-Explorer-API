@@ -57,20 +57,18 @@ app.get('/weather', async (req, res) => {
   });
 
   app.get('/movies', async (req, res) => {
-    const { city } = req.query;
+    const { searchQuery } = req.query;
   
     try {
-      const movieData = await axios.get(
-        `https://api.themoviedb.org/3/search/movie?query=${city}&api_key=${process.env.MOVIE_API_KEY}`
-      );
+      let movieData = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${city}&api_key=${process.env.MOVIE_API_KEY}`);
   
-      const movies = movieData.data.results.map((movie) => {
+      let movies = movieData.data.results.map(movie => {
         return new Movie(movie.title, movie.overview, movie.release_date);
-      });
+      })
   
       res.send(movies);
     } catch (error) {
-      res.status(500).send(error.message);
+      res.send(error.message);
     }
   });
 });
