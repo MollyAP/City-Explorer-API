@@ -27,35 +27,35 @@ app.get('/weather', async (req, res) => {
   try {
     let weatherData = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}`)
         // Validate searchQuery against available cities
-        const validCity = weatherData.data.data.find((item) => {
-          if (searchQuery == item.city_name) {
-            return true
-          } else {
-            return false
-          }
+      //   const validCity = weatherData.data.data.find((item) => {
+      //     if (searchQuery == item.city_name) {
+      //       return true
+      //     } else {
+      //       return false
+      //     }
     
-        });
+      //   });
     
-        if (!validCity) {
-          res.status(500).send(` 
-          <html>
-          <head>
-            <link rel="stylesheet" type="text/css" href="./error.css">
-          </head>
-          <body>
-            <div class="outer-container">
-              <div class="inner-container">
-                <h1>500</h1>
-                <p>Sowwy, the page you are looking for does not exist ówò</p>
-              </div>
-            </div>
-          </body>
-        </html>
-      `);
-          return;
-        }
+      //   if (!validCity) {
+      //     res.status(500).send(` 
+      //     <html>
+      //     <head>
+      //       <link rel="stylesheet" type="text/css" href="./error.css">
+      //     </head>
+      //     <body>
+      //       <div class="outer-container">
+      //         <div class="inner-container">
+      //           <h1>500</h1>
+      //           <p>Sowwy, the page you are looking for does not exist ówò</p>
+      //         </div>
+      //       </div>
+      //     </body>
+      //   </html>
+      // `);
+      //     return;
+      //   }
     
-        let dailyForecasts = validCity.data.map(day=>{
+        let dailyForecasts = weatherData.data.data.map(day=>{
           return new Forecast(day.datetime, day.weather.description);
         })
     
