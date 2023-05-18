@@ -1,7 +1,9 @@
 const express = require('express');
+const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3005;
-const weatherData = require("./weather.json");
+// const weatherData = require("./weather.json");
+require("dotenv").config();
 const cors = require("cors")
 
 app.use(
@@ -19,43 +21,48 @@ class Forecast{
 
 app.use(express.static(__dirname));
 
-app.get('/weather', (req, res) => {
+app.get('/weather', async (req, res) => {
   const { lat, lon, searchQuery } = req.query;
 
-    // Validate searchQuery against available cities
-    const validCity = weatherData.find((item) => {
-      if (searchQuery == item.city_name) {
-        return true
-      } else {
-        return false
-      }
-
-    });
-
-    if (!validCity) {
-      res.status(500).send(` 
-      <html>
-      <head>
-        <link rel="stylesheet" type="text/css" href="./error.css">
-      </head>
-      <body>
-        <div class="outer-container">
-          <div class="inner-container">
-            <h1>500</h1>
-            <p>Sowwy, the page you are looking for does not exist ówò</p>
-          </div>
-        </div>
-      </body>
-    </html>
-  `);
-      return;
-    }
-
-    let dailyForecasts = validCity.data.map(day=>{
-      return new Forecast(day.datetime, day.weather.description);
-    })
-
-    res.send(dailyForecasts)
+  try {
+    let weatherData = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?city=${searchQuery},NC&key=${process.env.WEATHER_API_KEY}`).data
+        // Validate searchQuery against available cities
+        const validCity = weatherData.find((item) => {
+          if (searchQuery == item.city_name) {
+            return true
+          } else {
+            return false
+          }
+    
+        });
+    
+        if (!validCity) {
+          res.status(500).send(` 
+          <html>
+          <head>
+            <link rel="stylesheet" type="text/css" href="./error.css">
+          </head>
+          <body>
+            <div class="outer-container">
+              <div class="inner-container">
+                <h1>500</h1>
+                <p>Sowwy, the page you are looking for does not exist ówò</p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `);
+          return;
+        }
+    
+        let dailyForecasts = validCity.data.map(day=>{
+          return new Forecast(day.datetime, day.weather.description);
+        })
+    
+        res.send(dailyForecasts)
+  } catch (error) {
+    res.send(error.message)
+  }
     // Filter the weather data based on lat, lon, and searchQuery
     const forcastData = validCity.data
 
