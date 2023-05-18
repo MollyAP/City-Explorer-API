@@ -1,7 +1,14 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3005;
-const weatherData = require("./weather.json")
+const weatherData = require("./weather.json");
+const cors = require("cors")
+
+app.use(
+  cors({
+    origin:"https://dacityexplorer.netlify.app"
+  })
+);
 
 app.use(express.static(__dirname));
 
