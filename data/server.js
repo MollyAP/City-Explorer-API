@@ -10,6 +10,13 @@ app.use(
   })
 );
 
+class Forecast{
+  constructor(date,description){
+    this.date = date;
+    this.description = description;
+  }
+}
+
 app.use(express.static(__dirname));
 
 app.get('/weather', (req, res) => {
@@ -43,7 +50,12 @@ app.get('/weather', (req, res) => {
   `);
       return;
     }
-    res.send(validCity)
+
+    let dailyForecasts = validCity.data.map(day=>{
+      return new Forecast(day.datetime, day.weather.description);
+    })
+    
+    res.send(dailyForecasts)
     // Filter the weather data based on lat, lon, and searchQuery
     const forcastData = validCity.data
 
