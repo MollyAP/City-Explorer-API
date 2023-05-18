@@ -25,9 +25,9 @@ app.get('/weather', async (req, res) => {
   const { lat, lon, searchQuery } = req.query;
 
   try {
-    let weatherData = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}`).data
+    let weatherData = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}`)
         // Validate searchQuery against available cities
-        const validCity = weatherData.find((item) => {
+        const validCity = weatherData.data.data.find((item) => {
           if (searchQuery == item.city_name) {
             return true
           } else {
