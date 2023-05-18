@@ -1,22 +1,12 @@
 const express = require('express');
-const fs = require('fs');
-const Forecast = require('./forecast');
 const app = express();
 const PORT = process.env.PORT || 3005;
+const weatherData = require("./weather.json")
 
 app.use(express.static(__dirname));
 
 app.get('/weather', (req, res) => {
   const { lat, lon, searchQuery } = req.query;
-
-  fs.readFile('./weather.json', 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('505 ERROR READING WEATHER DATA 505');
-      return;
-    }
-
-    const weatherData = JSON.parse(data);
 
     // Validate searchQuery against available cities
     const validCity = weatherData.find((item) => {
@@ -61,7 +51,7 @@ app.get('/weather', (req, res) => {
       };
     });
   });
-});
+
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
