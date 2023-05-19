@@ -50,11 +50,11 @@ app.get('/movies', async (req, res) => {
   try {
     let movieData = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${searchQuery}&api_key=${process.env.MOVIE_API_KEY}`);
 
-    let movies = movieData.data.results.map(movie => {
+    let localMovies = movieData.data.results.map(movie => {
       return new Movie(movie.title, movie.overview, movie.release_date);
     });
 
-    res.send(movies);
+    res.send(localMovies);
   } catch (error) {
     res.send(error.message);
   }
