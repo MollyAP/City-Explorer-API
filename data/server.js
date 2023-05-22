@@ -54,8 +54,6 @@ app.get('/movies', async (req, res) => {
       return new Movie(movie.title, movie.overview, movie.release_date);
     });
 
-console.log(movieData)
-console.log(res)
 
     res.send(localMovies);
   } catch (error) {
