@@ -15,6 +15,11 @@ app.use(express.static(__dirname));
 require('./Weather');
 require('./Movies');
 
+app.get('/weather', async (req, res) => {
+  // Retrieve the latitude, longitude, and searchQuery parameters from the request
+  const { lat, lon, searchQuery } = req.query;
+});
+
 
 
 app.listen(PORT, () => {
