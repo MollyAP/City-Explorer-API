@@ -20,7 +20,10 @@ app.get('/weather', async (req, res) => {
   const { lat, lon, searchQuery } = req.query;
 });
 
-
+app.get('/movies', async (req, res) => {
+  // Retrieve the searchQuery and city parameters from the request
+  const { searchQuery, city } = req.query;
+});
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
